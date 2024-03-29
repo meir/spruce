@@ -1,63 +1,21 @@
-.template = use "./template.spr"
 
-.metadata {
-  .url = "/"
-  .title = "Homepage"
-
-  head {
-    link rel="stylesheet" href="stylesheet.css"
-    title {
-      content = .metadata.title
+html {
+  body {
+    div onclick="test()" {
+      "this is just a test"
     }
-  }
-}
-
-.urls = {
-  .home = {
-    .url = "/"
-    .title = "Home"
-  }
-  .about = {
-    .url = "/about"
-    .title = "About"
-  }
-}
-
-.navigation {
-  nav {
-    ul {
-      :for .url in .urls {
+    main {
+      ul {
         li {
-          a {
-            href = .url.url
-            content = .url.title
-          }
+          "of certain features"
+        }
+        li {
+          "like these"
+        }
+        li {
+          "kind of lists"
         }
       }
-    }
-  }
-}
-
-body {
-  h1#title {
-    "Hello, world!"
-  }
-  .template {
-    .content = {
-      "This is the content."
-    }
-  }
-  p {
-    "This is a paragraph."
-  }
-  .navigation
-  
-  div {
-    label for="input" {
-      content = "Input"
-    }
-    input #input type="text" {
-      value = "Hello, world!"
     }
   }
 }
