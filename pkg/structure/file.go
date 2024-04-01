@@ -1,7 +1,16 @@
 package structure
 
 type File struct {
-	tokens *Tokenizer
+	Tokens *Tokenizer
+	Asts   []*ASTWrapper
+	Lexer  *Lexer
 
-	raw []byte
+	Scope *Scope
+
+	Dir string
+	Raw []byte
+}
+
+func (f *File) String() string {
+	return f.Lexer.Format(f.Asts)
 }

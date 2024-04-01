@@ -2,26 +2,15 @@ package main
 
 import (
 	"fmt"
-	"os"
 
-	"github.com/meir/spruce/pkg/states"
-	"github.com/meir/spruce/pkg/structure"
+	"github.com/meir/spruce/pkg/spruce"
 )
 
 func main() {
-	data, err := os.ReadFile("./examples/index.spr")
+	file, err := spruce.Parse("./examples/index.spr")
 	if err != nil {
 		panic(err)
 	}
 
-	tokens := structure.NewTokens(string(data))
-	lexer := structure.NewLexer(tokens, []structure.Node{
-		states.NewElementAttributeNode(),
-		states.NewElementContentNode(),
-		states.NewElementNode(),
-		states.NewStringNode(),
-	})
-	asts := lexer.Parse()
-	output := lexer.Format(asts)
-	fmt.Println(output)
+	fmt.Println(file.String())
 }

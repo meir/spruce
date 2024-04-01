@@ -45,7 +45,6 @@ func (e *ElementNode) Active(ts *structure.Tokenizer) (structure.State, structur
 	t := ts.Current()
 	rexp := regexp.MustCompile(`[a-z]+`)
 	if rexp.MatchString(t.Str) {
-		ts.Skip(1)
 		return structure.STATE_ELEMENT, &ElementAST{tag: t.Str}
 	}
 	return 0, nil

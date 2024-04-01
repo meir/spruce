@@ -14,13 +14,17 @@ func (s *StringAST) Next(ts *structure.Tokenizer) bool {
 	t := ts.Current()
 	switch t.Str {
 	case "\\":
-		if ps := ts.PeekNext(len(s.quote)); ps != nil && ps.Str == "\\"+s.quote {
-			s.content += s.quote
+		if ps := ts.PeekNext(len(s.quote) + 1); ps != nil && ps.Str == "\\"+s.quote {
+			s.content += "\\" + s.quote
 			ts.Skip(len(s.quote))
+		} else {
+			s.content += t.Str
+			ts.Next()
+			s.content += ts.Current().Str
 		}
 		return false
 	case "`":
-		if ps := ts.PeekNext(len(s.quote) - 1); ps != nil && ps.Str != s.quote {
+		if ps := ts.PeekNext(len(s.quote)); ps != nil && ps.Str != s.quote {
 			return false
 		}
 
@@ -56,7 +60,7 @@ func (e *StringNode) Active(ts *structure.Tokenizer) (structure.State, structure
 	case "\"", "'", "`":
 		quote := t.Str
 		if ps := ts.PeekNext(2); ps != nil && ps.Str == "```" {
-			quote = "```"
+			quote = ps.Str
 			ts.Skip(2)
 		}
 		return structure.STATE_STRING, &StringAST{quote: quote}

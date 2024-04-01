@@ -38,7 +38,7 @@ func NewTokens(s string) *Tokenizer {
 	return &Tokenizer{
 		Tokens: tokenize(s),
 
-		index: 0,
+		index: -1,
 	}
 }
 
@@ -93,7 +93,7 @@ func (t *Tokenizer) Peek(i int) *Token {
 func (t *Tokenizer) PeekNext(i int) *Token {
 	if t.index+i < len(t.Tokens) {
 		current := t.Current()
-		for j := 1; j <= i; j++ {
+		for j := 1; j < i; j++ {
 			peek := t.Peek(j)
 			if !current.Join(peek) {
 				return nil

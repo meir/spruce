@@ -34,7 +34,7 @@ func (e *ElementAttributeNode) States() []structure.State {
 }
 
 func (e *ElementAttributeNode) Active(ts *structure.Tokenizer) (structure.State, structure.AST) {
-	t := ts.PeekNext(1)
+	t := ts.PeekNext(2)
 	if t == nil {
 		return 0, nil
 	}

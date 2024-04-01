@@ -1,10 +1,12 @@
+@import "template"
 
 html {
   body {
     div onclick="test()" {
       "this is just a test"
     }
-    main {
+    main#test.abc.test {
+      onclick="alert(\"This is a test\n\")"
       ul {
         li {
           "of certain features"
