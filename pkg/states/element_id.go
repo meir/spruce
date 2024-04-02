@@ -35,7 +35,7 @@ func (e *ElementIdNode) States() []structure.State {
 	}
 }
 
-func (e *ElementIdNode) Active(ts *structure.Tokenizer) (structure.State, structure.AST) {
+func (e *ElementIdNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (structure.State, structure.AST) {
 	t := ts.PeekNext(2)
 	if t == nil {
 		return 0, nil

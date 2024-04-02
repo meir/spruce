@@ -1,33 +1,13 @@
 package structure
 
-import "regexp"
-
-type Token struct {
-	Str string
-
-	Line  int
-	Start int
-	End   int
-}
+import (
+	"regexp"
+)
 
 type Tokenizer struct {
 	Tokens []Token
 
 	index int
-}
-
-func (t *Token) Join(t2 *Token) bool {
-	if t.Line != t2.Line {
-		return false
-	}
-
-	if t.Start+len(t.Str) != t2.Start {
-		return false
-	}
-
-	t.Str += t2.Str
-	t.End = t2.End
-	return true
 }
 
 const tokenizeRegex = `([^a-zA-Z ]|[a-zA-Z]+[a-zA-Z0-9-_]*| +)`
@@ -90,6 +70,23 @@ func (t *Tokenizer) Peek(i int) *Token {
 	return nil
 }
 
+func (t *Tokenizer) PeekActual(i int) *Token {
+	x := 1
+	if i < 0 {
+		x = -1
+	}
+
+Start:
+	if t.index+i < len(t.Tokens) {
+		if t.Peek(i).IsEmpty() {
+			i += x
+			goto Start
+		}
+		return t.Peek(i)
+	}
+	return nil
+}
+
 func (t *Tokenizer) PeekNext(i int) *Token {
 	if t.index+i < len(t.Tokens) {
 		current := t.Current()
@@ -104,8 +101,40 @@ func (t *Tokenizer) PeekNext(i int) *Token {
 	return nil
 }
 
+func (t *Tokenizer) PeekNextActual(i int) *Token {
+	x := 1
+	if i < 0 {
+		x = -1
+	}
+
+	if t.index+i < len(t.Tokens) {
+		current := t.Current()
+		for j, offset := 1, 0; j < i+offset; j++ {
+			peek := t.Peek(j)
+			if peek.IsEmpty() {
+				offset += x
+				continue
+			}
+			if !current.Join(peek) {
+				return nil
+			}
+		}
+		return current
+	}
+	return nil
+}
+
 func (t *Tokenizer) Skip(i int) {
 	if t.index+i < len(t.Tokens) {
 		t.index += i
+	}
+}
+
+func (t *Tokenizer) SkipTo(tx *Token) {
+	for i, token := range t.Tokens {
+		if token.Line == tx.Line && token.Start == tx.Start {
+			t.index = i
+			break
+		}
 	}
 }

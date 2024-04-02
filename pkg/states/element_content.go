@@ -50,7 +50,7 @@ func (e *ElementContentNode) States() []structure.State {
 	}
 }
 
-func (e *ElementContentNode) Active(ts *structure.Tokenizer) (structure.State, structure.AST) {
+func (e *ElementContentNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (structure.State, structure.AST) {
 	t := ts.Current()
 	switch t.Str {
 	case "{":

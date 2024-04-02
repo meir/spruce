@@ -12,24 +12,6 @@ type Lexer struct {
 	nodes []Node
 }
 
-type State int64
-
-type AST interface {
-	Next(t *Tokenizer) bool
-	String([]*ASTWrapper) string
-}
-
-type ASTWrapper struct {
-	Ast      AST
-	Children []*ASTWrapper
-	state    State
-}
-
-type Node interface {
-	Active(l *Tokenizer) (State, AST)
-	States() []State
-}
-
 func NewLexer(tokenizer *Tokenizer, nodes []Node) *Lexer {
 	return &Lexer{
 		tokens: tokenizer,
@@ -41,17 +23,20 @@ func (l *Lexer) Parse() []*ASTWrapper {
 	asts := []*ASTWrapper{}
 	root := []*ASTWrapper{}
 
+	scope := NewScope()
+
 TokenLoop:
 	for l.tokens.Next() {
 		nodes := l.stateNodes()
 
 		for _, node := range nodes {
-			if state, ast := node.Active(l.tokens); ast != nil {
+			if state, ast := node.Active(l.tokens, scope); ast != nil {
 				l.state = state
 				asts = append(asts, &ASTWrapper{
 					Ast:      ast,
 					Children: []*ASTWrapper{},
 					state:    state,
+					scope:    NewScopeWithParent(scope),
 				})
 				continue TokenLoop
 			}
@@ -59,6 +44,7 @@ TokenLoop:
 
 		if len(asts) != 0 {
 			current := asts[len(asts)-1]
+			scope = current.scope
 			if end := current.Ast.Next(l.tokens); end {
 				if len(asts) > 1 {
 					parent := asts[len(asts)-2]

@@ -1,23 +1,27 @@
 package states
 
 import (
-	"fmt"
-	"regexp"
-
 	"github.com/meir/spruce/pkg/structure"
+	"github.com/meir/spruce/pkg/variables"
 )
 
 type ElementAttributeAST struct {
 	key   string
-	value structure.AST
+	scope *structure.Scope
 }
 
 func (e *ElementAttributeAST) Next(ts *structure.Tokenizer) bool {
-	return e.value.Next(ts)
+	return true
 }
 
 func (e *ElementAttributeAST) String(children []*structure.ASTWrapper) string {
-	return fmt.Sprintf(" %s=\"%s\"", e.key, e.value.String(children))
+	if m, ok := e.scope.Get("attributes").(*variables.MapVariable); ok {
+		if v, ok := m.Get().(map[string]any); ok {
+			v[e.key] = structure.JoinChildren(children)
+			m.Set(v)
+		}
+	}
+	return ""
 }
 
 type ElementAttributeNode struct{}
@@ -33,24 +37,13 @@ func (e *ElementAttributeNode) States() []structure.State {
 	}
 }
 
-func (e *ElementAttributeNode) Active(ts *structure.Tokenizer) (structure.State, structure.AST) {
-	t := ts.PeekNext(2)
-	if t == nil {
-		return 0, nil
-	}
-
-	rexp := regexp.MustCompile(`[a-zA-Z]+=`)
-	if rexp.MatchString(t.Str) {
-		key := ts.Current().Str
-		ts.Skip(2)
-		_, stringAst := NewStringNode().Active(ts)
-		if stringAst == nil {
-			panic(fmt.Errorf("expected string to start at %v:%v", ts.Current().Line, ts.Current().Start))
-		}
-
+func (e *ElementAttributeNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (structure.State, structure.AST) {
+	t := ts.Current()
+	if t.Equals("=") {
+		key := ts.PeekActual(-1).Str
 		return structure.STATE_ELEMENT_ATTRIBUTE, &ElementAttributeAST{
 			key:   key,
-			value: stringAst,
+			scope: scope,
 		}
 	}
 	return 0, nil

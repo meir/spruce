@@ -1,5 +1,7 @@
 package structure
 
+type State int64
+
 const (
 	STATE_ROOT State = iota
 	STATE_ELEMENT

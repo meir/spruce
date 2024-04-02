@@ -51,10 +51,11 @@ func (s *StringNode) States() []structure.State {
 	return []structure.State{
 		structure.STATE_ROOT,
 		structure.STATE_ELEMENT_CONTENT,
+		structure.STATE_ELEMENT_ATTRIBUTE,
 	}
 }
 
-func (e *StringNode) Active(ts *structure.Tokenizer) (structure.State, structure.AST) {
+func (e *StringNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (structure.State, structure.AST) {
 	t := ts.Current()
 	switch t.Str {
 	case "\"", "'", "`":
