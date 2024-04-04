@@ -16,8 +16,6 @@ func (e ElementAST) Next(ts *structure.Tokenizer, self *structure.ASTWrapper) bo
 }
 
 func (e *ElementAST) String(self *structure.ASTWrapper) string {
-	// <%s%s%s> might seem weird but element_content will provide the >%s</
-
 	attrStr := ""
 
 	if id, ok := structure.Get[string](self.Scope.Get("id")); ok && id != "" {
