@@ -62,6 +62,25 @@ func (t *Tokenizer) Next() bool {
 	return false
 }
 
+func (t *Tokenizer) NextActual() bool {
+	if t.index+1 < len(t.Tokens) {
+		x := 1
+		for {
+			pt := t.Peek(x)
+			if pt != nil {
+				if pt.IsEmpty() {
+					x++
+					continue
+				}
+			}
+			break
+		}
+		t.index += x
+		return true
+	}
+	return false
+}
+
 func (t *Tokenizer) Peek(i int) *Token {
 	if t.index+i < len(t.Tokens) {
 		token := t.Tokens[t.index+i]

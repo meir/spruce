@@ -21,5 +21,9 @@ func (a *ASTsVariable) Set(value any) {
 }
 
 func (a *ASTsVariable) String() string {
-	return structure.JoinChildren(a.asts)
+	output := ""
+	for _, ast := range a.asts {
+		output += ast.Ast.String(ast)
+	}
+	return output
 }

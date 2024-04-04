@@ -1,6 +1,7 @@
 package structure
 
 import (
+	"fmt"
 	"slices"
 	"strings"
 )
@@ -30,34 +31,41 @@ TokenLoop:
 		nodes := l.stateNodes()
 
 		for _, node := range nodes {
+			scope = NewScopeWithParent(scope)
 			if state, ast := node.Active(l.tokens, scope); ast != nil {
 				l.state = state
 				asts = append(asts, &ASTWrapper{
 					Ast:      ast,
 					Children: []*ASTWrapper{},
 					state:    state,
-					scope:    NewScopeWithParent(scope),
+					Scope:    scope,
 				})
 				continue TokenLoop
 			}
 		}
 
-		if len(asts) != 0 {
-			current := asts[len(asts)-1]
-			scope = current.scope
-			if end := current.Ast.Next(l.tokens); end {
-				if len(asts) > 1 {
-					parent := asts[len(asts)-2]
-					parent.Children = append(parent.Children, current)
-					l.state = parent.state
-					asts = asts[:len(asts)-1]
-					continue TokenLoop
-				}
-				asts = asts[:len(asts)-1]
-				if len(asts) == 0 {
-					root = append(root, current)
-					l.state = STATE_ROOT
-				}
+		if len(asts) == 0 {
+			curr := l.tokens.Current()
+			if curr.IsEmpty() {
+				continue TokenLoop
+			}
+			panic(fmt.Errorf("unexpected token: %s at %d:%d", curr.Str, curr.Line, curr.Start))
+		}
+
+		currentAst := asts[len(asts)-1]
+		scope = currentAst.Scope
+		endAst := currentAst.Ast.Next(l.tokens, currentAst)
+
+		if endAst {
+			asts = asts[:len(asts)-1]
+
+			if len(asts) > 0 {
+				parent := asts[len(asts)-1]
+				parent.Children = append(parent.Children, currentAst)
+				l.state = parent.state
+			} else {
+				root = append(root, currentAst)
+				l.state = STATE_ROOT
 			}
 		}
 	}
@@ -68,7 +76,7 @@ TokenLoop:
 func (l *Lexer) Format(ast []*ASTWrapper) string {
 	builder := strings.Builder{}
 	for _, a := range ast {
-		builder.WriteString(a.Ast.String(a.Children))
+		builder.WriteString(a.Ast.String(a))
 	}
 	return builder.String()
 }

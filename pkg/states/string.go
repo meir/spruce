@@ -10,7 +10,7 @@ type StringAST struct {
 	quote string
 }
 
-func (s *StringAST) Next(ts *structure.Tokenizer) bool {
+func (s *StringAST) Next(ts *structure.Tokenizer, self *structure.ASTWrapper) bool {
 	t := ts.Current()
 	switch t.Str {
 	case "\\":
@@ -37,7 +37,7 @@ func (s *StringAST) Next(ts *structure.Tokenizer) bool {
 	}
 }
 
-func (s *StringAST) String(children []*structure.ASTWrapper) string {
+func (s *StringAST) String(self *structure.ASTWrapper) string {
 	return s.content
 }
 

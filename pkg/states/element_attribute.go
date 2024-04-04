@@ -2,25 +2,22 @@ package states
 
 import (
 	"github.com/meir/spruce/pkg/structure"
-	"github.com/meir/spruce/pkg/variables"
 )
 
 type ElementAttributeAST struct {
-	key   string
-	scope *structure.Scope
+	key string
 }
 
-func (e *ElementAttributeAST) Next(ts *structure.Tokenizer) bool {
-	return true
-}
-
-func (e *ElementAttributeAST) String(children []*structure.ASTWrapper) string {
-	if m, ok := e.scope.Get("attributes").(*variables.MapVariable); ok {
-		if v, ok := m.Get().(map[string]any); ok {
-			v[e.key] = structure.JoinChildren(children)
-			m.Set(v)
-		}
+func (e *ElementAttributeAST) Next(ts *structure.Tokenizer, self *structure.ASTWrapper) bool {
+	attributes := self.Scope.Get("attributes")
+	if m, ok := structure.Get[map[string]any](attributes); ok {
+		m[e.key] = self.JoinChildren()
+		structure.Set(attributes, m)
 	}
+	return len(self.Children) > 0
+}
+
+func (e *ElementAttributeAST) String(self *structure.ASTWrapper) string {
 	return ""
 }
 
@@ -38,12 +35,11 @@ func (e *ElementAttributeNode) States() []structure.State {
 }
 
 func (e *ElementAttributeNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (structure.State, structure.AST) {
-	t := ts.Current()
+	t := ts.PeekActual(1)
 	if t.Equals("=") {
-		key := ts.PeekActual(-1).Str
+		key := ts.Current().Str
 		return structure.STATE_ELEMENT_ATTRIBUTE, &ElementAttributeAST{
-			key:   key,
-			scope: scope,
+			key: key,
 		}
 	}
 	return 0, nil

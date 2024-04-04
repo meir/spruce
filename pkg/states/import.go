@@ -6,11 +6,11 @@ type ImportAST struct {
 	value structure.AST
 }
 
-func (e *ImportAST) Next(ts *structure.Tokenizer) bool {
+func (e *ImportAST) Next(ts *structure.Tokenizer, self *structure.ASTWrapper) bool {
 	return true
 }
 
-func (e *ImportAST) String(children []*structure.ASTWrapper) string {
+func (e *ImportAST) String(self *structure.ASTWrapper) string {
 	return ""
 }
 

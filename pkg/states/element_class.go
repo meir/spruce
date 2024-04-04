@@ -5,16 +5,23 @@ import (
 )
 
 type ElementClassAST struct {
-	class   string
-	classes []string
+	class string
 }
 
-func (e *ElementClassAST) Next(ts *structure.Tokenizer) bool {
-	// add class to scope
+func (e *ElementClassAST) Next(ts *structure.Tokenizer, self *structure.ASTWrapper) bool {
+	class := self.Scope.Get("class")
+	if m, ok := structure.Get[string](class); ok {
+		if m == "" {
+			m = e.class
+		} else {
+			m += " " + e.class
+		}
+		structure.Set(class, m)
+	}
 	return true
 }
 
-func (e ElementClassAST) String(children []*structure.ASTWrapper) string {
+func (e ElementClassAST) String(self *structure.ASTWrapper) string {
 	return ""
 }
 
@@ -27,18 +34,14 @@ func NewElementClassNode() *ElementClassNode {
 func (e *ElementClassNode) States() []structure.State {
 	return []structure.State{
 		structure.STATE_ELEMENT,
-		structure.STATE_ELEMENT_ATTRIBUTE,
-		structure.STATE_ELEMENT_ID,
-		structure.STATE_ELEMENT_CLASS,
 	}
 }
 
 func (e *ElementClassNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (structure.State, structure.AST) {
 	t := ts.PeekNext(2)
-	if t.EqualsRegexp(`\.[a-zA-Z]+`) {
+	if t.EqualsRegexp(`\..+`) {
 		return structure.STATE_ELEMENT_CLASS, &ElementClassAST{
-			class:   "",
-			classes: []string{},
+			class: t.Str[1:],
 		}
 	}
 	return 0, nil

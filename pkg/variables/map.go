@@ -9,8 +9,8 @@ type MapVariable struct {
 	_map map[string]interface{}
 }
 
-func NewMapVariable(map[string]interface{}) *MapVariable {
-	return &MapVariable{_map: map[string]interface{}{}}
+func NewMapVariable(m map[string]interface{}) *MapVariable {
+	return &MapVariable{_map: m}
 }
 
 func (m *MapVariable) Get() any {
@@ -26,7 +26,7 @@ func (m *MapVariable) Set(value any) {
 func (m *MapVariable) String() string {
 	output := []string{}
 	for k, v := range m._map {
-		output = append(output, fmt.Sprintf("%s=\"%s\"", k, v))
+		output = append(output, fmt.Sprintf("%s=\"%v\"", k, v))
 	}
 	return strings.Join(output, " ")
 }
