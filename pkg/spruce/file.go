@@ -20,8 +20,11 @@ func Parse(file string) (*structure.File, error) {
 		states.NewImportNode(),
 		states.NewElementIdNode(),
 		states.NewElementClassNode(),
+		states.NewVariableInsertNode(),
+		states.NewTemplateNode(),
 		states.NewElementAttributeNode(),
-		states.NewElementContentNode(),
+		states.NewVariableNode(),
+		states.NewContainerNode(),
 		states.NewElementNode(),
 		states.NewStringNode(),
 	})

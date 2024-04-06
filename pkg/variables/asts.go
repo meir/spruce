@@ -3,26 +3,26 @@ package variables
 import "github.com/meir/spruce/pkg/structure"
 
 type ASTsVariable struct {
-	asts []*structure.ASTWrapper
+	Asts []*structure.ASTWrapper
 }
 
 func NewASTsVariable(asts []*structure.ASTWrapper) *ASTsVariable {
-	return &ASTsVariable{asts: asts}
+	return &ASTsVariable{Asts: asts}
 }
 
 func (a *ASTsVariable) Get() any {
-	return a.asts
+	return a.Asts
 }
 
 func (a *ASTsVariable) Set(value any) {
 	if value, ok := value.([]*structure.ASTWrapper); ok {
-		a.asts = value
+		a.Asts = value
 	}
 }
 
 func (a *ASTsVariable) String() string {
 	output := ""
-	for _, ast := range a.asts {
+	for _, ast := range a.Asts {
 		output += ast.Ast.String(ast)
 	}
 	return output

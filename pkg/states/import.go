@@ -26,14 +26,14 @@ func (e *ImportNode) States() []structure.State {
 	}
 }
 
-func (e *ImportNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (structure.State, structure.AST) {
+func (e *ImportNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (structure.State, structure.AST, *structure.Scope) {
 	t := ts.PeekNext(2)
 	if t == nil {
-		return 0, nil
+		return 0, nil, nil
 	}
 
 	if t.Str == "@import" {
-		return structure.STATE_IMPORT, &ImportAST{}
+		return structure.STATE_IMPORT, &ImportAST{}, scope
 	}
-	return 0, nil
+	return 0, nil, nil
 }

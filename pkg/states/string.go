@@ -50,12 +50,12 @@ func NewStringNode() *StringNode {
 func (s *StringNode) States() []structure.State {
 	return []structure.State{
 		structure.STATE_ROOT,
-		structure.STATE_ELEMENT_CONTENT,
+		structure.STATE_CONTAINER,
 		structure.STATE_ELEMENT_ATTRIBUTE,
 	}
 }
 
-func (e *StringNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (structure.State, structure.AST) {
+func (e *StringNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (structure.State, structure.AST, *structure.Scope) {
 	t := ts.Current()
 	switch t.Str {
 	case "\"", "'", "`":
@@ -64,8 +64,8 @@ func (e *StringNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (st
 			quote = ps.Str
 			ts.Skip(2)
 		}
-		return structure.STATE_STRING, &StringAST{quote: quote}
+		return structure.STATE_STRING, &StringAST{quote: quote}, scope
 	default:
-		return 0, nil
+		return 0, nil, nil
 	}
 }

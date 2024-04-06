@@ -1,22 +1,21 @@
 
-html {
-  body {
-    div#uid onhover="alert()" {
-      "this is just a test"
-    }
-    main#test.abc.test {
-      onclick = "alert(\"This is a test\n\")"
-      ul {
-        li {
-          "of certain features"
-        }
-        li {
-          "like these"
-        }
-        li {
-          "kind of lists"
-        }
+layout = {
+  html {
+    body {
+      main {
+        $@
       }
     }
+  }
+}
+
+
+layout {
+  h1#header {
+    "Hello world!"
+  }
+
+  p {
+    "This is a paragraph"
   }
 }

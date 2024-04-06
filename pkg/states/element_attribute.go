@@ -30,17 +30,17 @@ func NewElementAttributeNode() *ElementAttributeNode {
 func (e *ElementAttributeNode) States() []structure.State {
 	return []structure.State{
 		structure.STATE_ELEMENT,
-		structure.STATE_ELEMENT_CONTENT,
+		structure.STATE_CONTAINER,
 	}
 }
 
-func (e *ElementAttributeNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (structure.State, structure.AST) {
+func (e *ElementAttributeNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (structure.State, structure.AST, *structure.Scope) {
 	t := ts.PeekActual(1)
 	if t.Equals("=") {
 		key := ts.Current().Str
 		return structure.STATE_ELEMENT_ATTRIBUTE, &ElementAttributeAST{
 			key: key,
-		}
+		}, scope
 	}
-	return 0, nil
+	return 0, nil, nil
 }

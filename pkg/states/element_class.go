@@ -37,12 +37,12 @@ func (e *ElementClassNode) States() []structure.State {
 	}
 }
 
-func (e *ElementClassNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (structure.State, structure.AST) {
+func (e *ElementClassNode) Active(ts *structure.Tokenizer, scope *structure.Scope) (structure.State, structure.AST, *structure.Scope) {
 	t := ts.PeekNext(2)
 	if t.EqualsRegexp(`\..+`) {
 		return structure.STATE_ELEMENT_CLASS, &ElementClassAST{
 			class: t.Str[1:],
-		}
+		}, scope
 	}
-	return 0, nil
+	return 0, nil, nil
 }

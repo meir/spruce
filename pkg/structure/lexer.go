@@ -31,8 +31,7 @@ TokenLoop:
 		nodes := l.stateNodes()
 
 		for _, node := range nodes {
-			scope = NewScopeWithParent(scope)
-			if state, ast := node.Active(l.tokens, scope); ast != nil {
+			if state, ast, scope := node.Active(l.tokens, scope); ast != nil {
 				l.state = state
 				asts = append(asts, &ASTWrapper{
 					Ast:      ast,
@@ -49,7 +48,7 @@ TokenLoop:
 			if curr.IsEmpty() {
 				continue TokenLoop
 			}
-			panic(fmt.Errorf("unexpected token: %s at %d:%d", curr.Str, curr.Line, curr.Start))
+			panic(fmt.Errorf("unexpected token: %s at %d:%d (state: %d)", curr.Str, curr.Line+1, curr.Start+1, l.state))
 		}
 
 		currentAst := asts[len(asts)-1]
