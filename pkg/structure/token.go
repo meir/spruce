@@ -34,6 +34,29 @@ func (t *Token) IsEmpty() bool {
 	return true
 }
 
+func (t *Token) IsSimilar(t2 *Token) bool {
+	if t != nil && t2 != nil {
+		if t.Line != t2.Line {
+			return false
+		}
+
+		if t.Start != t2.Start {
+			return false
+		}
+
+		if t.End != t2.End {
+			return false
+		}
+
+		if t.Str != t2.Str {
+			return false
+		}
+
+		return false
+	}
+	return true
+}
+
 func (t *Token) Equals(str string) bool {
 	if curr := t; curr != nil {
 		return curr.Str == str

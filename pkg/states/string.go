@@ -52,6 +52,7 @@ func (s *StringNode) States() []structure.State {
 		structure.STATE_ROOT,
 		structure.STATE_CONTAINER,
 		structure.STATE_ELEMENT_ATTRIBUTE,
+		structure.STATE_IMPORT,
 	}
 }
 

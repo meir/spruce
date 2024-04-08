@@ -20,11 +20,11 @@ func NewLexer(tokenizer *Tokenizer, nodes []Node) *Lexer {
 	}
 }
 
-func (l *Lexer) Parse() []*ASTWrapper {
+func (l *Lexer) Parse(file *File) []*ASTWrapper {
 	asts := []*ASTWrapper{}
 	root := []*ASTWrapper{}
 
-	scope := NewScope()
+	scope := file.Scope
 
 TokenLoop:
 	for l.tokens.Next() {
@@ -38,6 +38,8 @@ TokenLoop:
 					Children: []*ASTWrapper{},
 					state:    state,
 					Scope:    scope,
+
+					File: file,
 				})
 				continue TokenLoop
 			}

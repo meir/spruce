@@ -1,14 +1,4 @@
-
-layout = {
-  html {
-    body {
-      main {
-        $@
-      }
-    }
-  }
-}
-
+@import "template"
 
 layout {
   h1#header {

@@ -12,6 +12,8 @@ type ASTWrapper struct {
 	Children []*ASTWrapper
 	state    State
 	Scope    *Scope
+
+	File *File
 }
 
 func (ast *ASTWrapper) JoinChildren() string {
