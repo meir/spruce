@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/meir/spruce/pkg/spruce"
+	"github.com/meir/spruce/internal/spruce"
 )
 
 func main() {
