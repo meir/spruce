@@ -1,16 +1,11 @@
 package main
 
-import (
-	"fmt"
-
-	"github.com/meir/spruce/internal/spruce"
-)
+import "github.com/meir/spruce/internal/build"
 
 func main() {
-	file, err := spruce.Parse("./examples/index.spr")
-	if err != nil {
-		panic(err)
-	}
+	// get current directory
+	dir := "."
+	output_dir := "./output"
 
-	fmt.Println(file.String())
+	build.Build(dir, output_dir)
 }

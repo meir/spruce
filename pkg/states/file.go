@@ -17,6 +17,7 @@ func Parse(file string) (*structure.File, error) {
 	tokens := structure.NewTokens(string(data))
 	lexer := structure.NewLexer(tokens, []structure.Node{
 		NewAtStatementNode(),
+		NewMetaNode(),
 		NewImportNode(),
 		NewElementIdNode(),
 		NewElementClassNode(),

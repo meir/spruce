@@ -1,5 +1,9 @@
 @import "template"
 
+@meta {
+    url = "/homepage"
+}
+
 layout {
   h1#header {
     "Hello world!"

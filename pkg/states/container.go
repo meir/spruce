@@ -31,6 +31,7 @@ func (e *ContainerNode) States() []structure.State {
 		structure.STATE_ELEMENT,
 		structure.STATE_VARIABLE_DEFINITION,
 		structure.STATE_TEMPLATE,
+		structure.STATE_META,
 	}
 }
 
