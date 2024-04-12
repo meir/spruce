@@ -1,10 +1,12 @@
 package variables
 
+import "fmt"
+
 type StringVariable struct {
-	str string
+	str any
 }
 
-func NewStringVariable(str string) *StringVariable {
+func NewStringVariable(str any) *StringVariable {
 	return &StringVariable{str: str}
 }
 
@@ -13,11 +15,9 @@ func (s *StringVariable) Get() any {
 }
 
 func (s *StringVariable) Set(value any) {
-	if value, ok := value.(string); ok {
-		s.str = value
-	}
+	s.str = value
 }
 
 func (s *StringVariable) String() string {
-	return s.str
+	return fmt.Sprint(s.str)
 }

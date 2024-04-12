@@ -41,7 +41,7 @@ func (e *ElementAST) String(self *structure.ASTWrapper) string {
 
 	content := self.JoinChildren()
 	if content != "" {
-		return fmt.Sprintf("<%s%s>%s</%s>", e.tag, attrStr, self.JoinChildren(), e.tag)
+		return fmt.Sprintf("<%s%s>%s</%s>", e.tag, attrStr, content, e.tag)
 	}
 	return fmt.Sprintf("<%s%s />", e.tag, attrStr)
 }

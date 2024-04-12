@@ -1,11 +1,11 @@
 package main
 
-import "github.com/meir/spruce/internal/build"
+import "github.com/meir/spruce/internal/spruce"
 
 func main() {
 	// get current directory
 	dir := "."
-	output_dir := "./output"
+	output_dir := "./build"
 
-	build.Build(dir, output_dir)
+	spruce.Build(dir, output_dir)
 }

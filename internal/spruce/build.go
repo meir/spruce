@@ -1,20 +1,25 @@
-package build
+package spruce
 
 import (
 	"os"
 	"path"
 	"strings"
 
-	"github.com/meir/spruce/internal/spruce"
-	"github.com/meir/spruce/pkg/states"
 	"github.com/meir/spruce/pkg/structure"
-	"github.com/meir/spruce/pkg/variables"
 )
 
 type FileWrapper struct {
 	file *structure.File
 
 	url string
+}
+
+func get_files_from_wrappers(wrappers []*FileWrapper) []*structure.File {
+	files := []*structure.File{}
+	for _, wrapper := range wrappers {
+		files = append(files, wrapper.file)
+	}
+	return files
 }
 
 func Build(dir string, output_dir string) {
@@ -30,6 +35,8 @@ func Build(dir string, output_dir string) {
 
 		file := path.Join(file_dir, "index.html")
 		content := page.file.Lexer.Format(page.file.Asts)
+
+		println(content)
 
 		err = os.WriteFile(file, []byte(content), os.ModePerm)
 		if err != nil {
@@ -48,50 +55,17 @@ func find_pages(dir string) []*FileWrapper {
 
 	fileWrappers := []*FileWrapper{}
 	for _, file := range files {
-		f, err := spruce.Parse(file)
+		f, err := Parse(file)
 		if err != nil {
 			panic(err)
 		}
 
-		// find MetaAST
-		for _, ast := range f.Asts {
-			if _, ok := ast.Ast.(*states.AtStatementAST); ok {
-				if ast.Children == nil || len(ast.Children) == 0 {
-					continue
-				}
-
-				if _, ok := ast.Children[0].Ast.(*states.MetaAST); ok {
-					ast = ast.Children[0]
-				}
-
-				if ast.Scope.Get("attributes") == nil {
-					continue
-				}
-
-				attributes := ast.Scope.Get("attributes").(*variables.MapVariable)
-
-				if attributes.Get() == nil {
-					continue
-				}
-
-				attr := attributes.Get().(map[string]interface{})
-
-				url := ""
-				for k, v := range attr {
-					if k == "url" {
-						url = v.(string)
-					}
-				}
-
-				if url == "" {
-					continue
-				}
-
-				fileWrappers = append(fileWrappers, &FileWrapper{
-					file: f,
-					url:  url,
-				})
-			}
+		if url_var := f.Scope.Get("url"); url_var != nil {
+			url := url_var.String()
+			fileWrappers = append(fileWrappers, &FileWrapper{
+				file: f,
+				url:  url,
+			})
 		}
 	}
 	return fileWrappers

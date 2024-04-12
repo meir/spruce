@@ -2,14 +2,15 @@
 
 @meta {
     url = "/homepage"
+    title = "Homepage"
 }
 
 layout {
   h1#header {
-    "Hello world!"
+    $title
   }
 
   p {
-    "This is a paragraph"
+    $pages
   }
 }
