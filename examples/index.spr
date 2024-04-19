@@ -10,7 +10,8 @@ layout {
     $title
   }
 
-  p {
-    $pages
+  p.intro {
+    "hello world!"
   }
 }
+
