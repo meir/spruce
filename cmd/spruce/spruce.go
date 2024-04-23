@@ -1,11 +1,18 @@
 package main
 
-import "github.com/meir/spruce/internal/spruce"
+import (
+	"github.com/meir/spruce/internal/spruce"
+	_ "github.com/meir/spruce/internal/spruce/ast"
+)
 
 func main() {
-	// get current directory
-	dir := "."
-	output_dir := "./build"
+	file := "./examples/index.spr"
 
-	spruce.Build(dir, output_dir)
+	ctx, err := spruce.Parse(file)
+	if err != nil {
+		panic(err)
+	}
+
+	result := spruce.String(ctx)
+	println(result)
 }

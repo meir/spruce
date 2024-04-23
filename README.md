@@ -6,11 +6,11 @@ Spruce is a simple html transpiler made for creating simple quick static website
 The purpose of this project is to be able to make a templating language that is simple to use and understand while having features to easily create pages without having to change other files to make changes.
 
 # Features/Roadmap
-- [x] HTML transpiling
-- [x] Variables
-- [x] IDs, Classes and Attributes
+- [ ] HTML transpiling
+- [ ] Variables
+- [ ] IDs, Classes and Attributes
 - [ ] Loops
-- [x] Templates
+- [ ] Templates
 - [ ] Conditionals
 - [ ] Operators
 - [ ] Keyword safety

@@ -1,17 +1,6 @@
-@import "template"
 
-@meta {
-    url = "/homepage"
-    title = "Homepage"
+{
+  "test"
 }
 
-layout {
-  h1#header {
-    $title
-  }
-
-  p.intro {
-    "hello world!"
-  }
-}
-
+"hello"
