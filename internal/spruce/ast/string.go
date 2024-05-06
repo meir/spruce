@@ -11,6 +11,7 @@ func init() {
 		States: []spruce.State{
 			spruce.STATE_SCOPE,
 			spruce.STATE_ROOT,
+			spruce.STATE_INLINE_ATTRIBUTE,
 		},
 		Activate: func(ctx context.Context) (context.Context, bool) {
 			tokenizer := spruce.GetTokenizer(ctx)
@@ -33,6 +34,7 @@ func init() {
 				}
 
 				quote = "```"
+				tokenizer.Skip(2)
 				break
 			case "'", "\"":
 				quote = t.String()

@@ -28,5 +28,5 @@ func NewUnexpectedToken(token *Token) UnexpectedToken {
 }
 
 func (e UnexpectedToken) Error() string {
-	return fmt.Sprintf("unexpected token '%s' at %s", e.token.Str, e.token.Location())
+	return fmt.Sprintf("unexpected token '%s' at %s", e.token.Str, e.token.Pos())
 }

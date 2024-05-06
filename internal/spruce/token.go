@@ -31,6 +31,6 @@ func (t Token) Match(rgx string) bool {
 	return regexp.MustCompile(rgx).MatchString(t.Str)
 }
 
-func (t Token) Location() string {
+func (t Token) Pos() string {
 	return fmt.Sprintf("%d:%d", t.Line, t.Start)
 }

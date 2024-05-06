@@ -11,6 +11,7 @@ func init() {
 		States: []spruce.State{
 			spruce.STATE_ROOT,
 			spruce.STATE_SCOPE,
+			spruce.STATE_IDENTIFIER,
 		},
 
 		Activate: func(ctx context.Context) (context.Context, bool) {

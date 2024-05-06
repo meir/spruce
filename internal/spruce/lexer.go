@@ -2,6 +2,7 @@ package spruce
 
 import (
 	"context"
+	"fmt"
 )
 
 type Lexer struct {
@@ -40,6 +41,10 @@ MainLoop:
 		}
 
 		l.ContinueAST()
+	}
+
+	if len(l.history) > 1 {
+		panic(fmt.Errorf("unexpected EOF at %v", tokenizer.Pos()))
 	}
 
 	return l.Current()

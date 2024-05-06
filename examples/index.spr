@@ -1,6 +1,10 @@
 
-{
-  "test"
+@meta {
+
 }
 
-"hello"
+div#button onclick="alert('hello world')" {
+  "Hello world!"
+}
+
+

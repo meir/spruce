@@ -51,6 +51,11 @@ func tokenize(content string) []Token {
 	return result
 }
 
+// Pos returns the line and character in the format "[line]:[character]"
+func (t *Tokenizer) Pos() string {
+	return t.file.Tokens[t.index].Pos()
+}
+
 // HasNext returns if there is a next token
 func (t *Tokenizer) HasNext() bool {
 	return t.index+1 < len(t.file.Tokens) && t.index+1 >= 0
@@ -99,7 +104,7 @@ func (t *Tokenizer) Peek(n int) (*Token, error) {
 }
 
 // PeekCheck returns the next token that matches the given regular expression
-func (t *Tokenizer) PeekCheck(n int, match regexp.Regexp) (*Token, error) {
+func (t *Tokenizer) PeekCheck(n int, match *regexp.Regexp) (*Token, error) {
 	token, err := t.Peek(n)
 	if err != nil {
 		return nil, err
