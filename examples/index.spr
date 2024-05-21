@@ -3,7 +3,7 @@
 
 }
 
-div#button onclick="alert('hello world')" {
+div#button onclick="alert(\"hello world\")" {
   "Hello world!"
 }
 
