@@ -44,7 +44,7 @@ MainLoop:
 	}
 
 	if len(l.history) > 1 {
-		panic(fmt.Errorf("unexpected EOF at %v", tokenizer.Pos()))
+		panic(fmt.Errorf("unexpected EOF at %v (state: %v)", tokenizer.Pos(), GetState(l.Current())))
 	}
 
 	return l.Current()

@@ -6,6 +6,10 @@ type String struct {
 	val string
 }
 
+func NewString(def string) *String {
+	return &String{def}
+}
+
 func (s *String) Value() any {
 	return s.val
 }

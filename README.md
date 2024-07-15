@@ -34,7 +34,7 @@ url = {
 
 layout {
   h1#title {
-    class=classes.title + "color-blue"
+    attr class = classes.title + "color-blue"
     
     meta.title
   }

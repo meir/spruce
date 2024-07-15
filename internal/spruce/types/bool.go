@@ -6,6 +6,10 @@ type Bool struct {
 	val bool
 }
 
+func NewBool(def bool) *Bool {
+	return &Bool{def}
+}
+
 func (b *Bool) Value() any {
 	return b.val
 }

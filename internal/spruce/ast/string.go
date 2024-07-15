@@ -2,6 +2,7 @@ package ast
 
 import (
 	"context"
+	"strings"
 
 	"github.com/meir/spruce/internal/spruce"
 )
@@ -77,6 +78,17 @@ QuoteSwitch:
 		if err != nil {
 			return false, err
 		}
+		switch current.String() {
+		case "n", "r", "t", "b", "f", "v", "0", "\\":
+			ast.content += "\\" + current.String()
+		}
+		if err = tokenizer.Next(); err != nil {
+			return false, err
+		}
+		current, err = tokenizer.Current()
+		if err != nil {
+			return false, err
+		}
 		break
 	case "\n":
 		if ast.Quote != "```" {
@@ -103,5 +115,5 @@ QuoteSwitch:
 }
 
 func (ast *StringAST) String(ctx context.Context) string {
-	return ast.content
+	return strings.ReplaceAll(ast.content, "\"", "\\\"")
 }

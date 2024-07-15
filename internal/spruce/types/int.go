@@ -6,6 +6,10 @@ type Int struct {
 	val int
 }
 
+func NewInt(def int) *Int {
+	return &Int{def}
+}
+
 func (i *Int) Value() any {
 	return i.val
 }
